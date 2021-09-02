@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>CRUD using MongoDB</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div class="container-xl">
+    <div class="table-responsive">
+      <div class="table-wrapper">
+        <div class="table-title">
+          <div class="row">
+            <div class="col-sm-6">
+              <h2>Manage <b>Users</b></h2>
+            </div>
+            <div class="col-sm-6">
+              <a href="#"id="sendmail" class="btn btn-primary"><i class="material-icons">&#xe0e1;</i> <span>Send</span></a>
+              <a href="#addUserModal" class="btn btn-success" data-toggle="modal"><i                  class="material-icons">&#xE147;</i> <span>Add New User</span></a>
+              <a href="#" id="deleteall" class="btn btn-danger"><i
+                  class="material-icons">&#xE15C;</i> <span>Delete</span></a>
+            </div>
+          </div>
+        </div>
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>
+                <span class="custom-checkbox">
+                  <input type="checkbox" id="selectAll">
+                  <label for="selectAll"></label>
+                </span>
+              </th>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Hobbies</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(var i=0; i < users.length; i++) {%>
+              <tr data-id="<%=users[i]._id%>">
+                <td>
+                  <span class="custom-checkbox">
+                    <input type="checkbox" id="checkbox<%=(i+1)%>" name="options[]" value="1">
+                    <label for="checkbox1"></label>
+                  </span>
+                </td>
+                <td>
+                  <%=users[i]._id%>
+                </td>
+                <td>
+                  <%=users[i].name%>
+                </td>
+                <td>
+                  <%=users[i].phone%>
+                </td>
+                <td>
+                  <%=users[i].email%>
+                </td>
+                <td>
+                  <%=users[i].hobbies%>
+                </td>
+                <td>
+                  <a href="#editUserModal" class="edit" data-toggle="modal" ><i class="material-icons"
+                      data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                  <a href="#" class="delete"><i class="material-icons"
+                      data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                </td>
+              </tr>
+              <%}%>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Add Modal HTML -->
+  <div id="addUserModal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form action="/create" method="POST">
+          <div class="modal-header">
+            <h4 class="modal-title">Add User</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Name</label>
+              <input type="text" class="form-control" name="name" required>
+            </div>
+            <div class="form-group">
+              <label>Phone</label>
+              <input type="text" class="form-control" name="phone" required>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" class="form-control" name="email" required>
+            </div>
+            <div class="form-group">
+              <label>Hobbies</label>
+              <input type="text" class="form-control" name="hobbies"required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+            <input type="submit" class="btn btn-success" value="Save">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- Edit Modal HTML -->
+  <div id="editUserModal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="editUserForm" >
+          <div class="modal-header">
+            <h4 class="modal-title">Edit User</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <input type="text" name="id" hidden>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Name</label>
+              <input type="text" class="form-control" name="name" required>
+            </div>
+            <div class="form-group">
+              <label>Phone</label>
+              <input type="text" class="form-control" name="phone"required>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" class="form-control" name="email"required>
+            </div>
+            <div class="form-group">
+              <label>Hobbies</label>
+              <input type="text" class="form-control" name="hobbies" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+            <input type="submit" class="btn btn-info" value="Save">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+
+</html>
