@@ -1,5 +1,3 @@
-
-// Activate tooltip
 $('[data-toggle="tooltip"]').tooltip();
 
 // Select/Deselect checkboxes
@@ -28,14 +26,14 @@ checkbox.click(function () {
   else
     checkedids.push($(this.closest('tr')).data('id'));
 });
-
+// Deletion
 $(".delete").click((e) => {
   console.log(e.currentTarget.parentNode);
   Delete([$(e.currentTarget.closest('tr')).data('id')]);
 });
 $('#deleteall').click(e=>Delete(checkedids));
 function Delete(id) {
-  if (confirm("Do you want to permanently delete this record?")) {
+  if (id.length>0 && confirm("Do you want to permanently delete this record?")) {
     fetch('/delete', {
       method: 'delete',
       headers: { 'Content-Type': 'application/json' },
@@ -52,14 +50,11 @@ function Delete(id) {
       .catch(console.error);
   }
 }
-
+// Editing/updating
 $('#editUserModal').on('show.bs.modal', function (e) {
-
-  //get data-id attribute of the clicked element
   let row = e.relatedTarget.closest('tr');
   let Id = $(row).data('id');
   let children = row.children;
-  //populate the textbox
   $(e.currentTarget).find('input[name="id"]').val(Id);
   $(e.currentTarget).find('input[name="name"]').val(children[2].innerText);
   $(e.currentTarget).find('input[name="phone"]').val(children[3].innerText);
@@ -80,7 +75,7 @@ $('#editUserForm').submit(e => {
   });
   $('#editUserModal').modal('hide');
 });
-
+// Send mail
 $('#sendmail').click(e=>{
   if(checkedids.length==0)
   alert("No item selected to send");
