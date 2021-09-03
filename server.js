@@ -25,6 +25,18 @@ app.use(cors(corsOptions)); // Used CORS to secure origin of API requests
 app.set('view engine', 'ejs');
 app.use(express.static('assets'));
 
+/* Redirect http to https */
+app.get("*", function (req, res, next) {
+
+    if ("https" !== req.headers["x-forwarded-proto"] && "production" === process.env.NODE_ENV) {
+        res.redirect("https://" + req.hostname + req.url);
+    } else {
+        // Continue to other routes if we're not redirecting
+        next();
+    }
+
+});
+
 // Connect to MongoDB
 MongoClient.connect(process.env.MONGODB_CONNECTION_STRING, {
     useUnifiedTopology: true
